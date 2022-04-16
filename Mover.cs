@@ -3,20 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
+using UnityEditor.Animations;
 
 public class Mover : MonoBehaviour
 {
     [SerializeField] Transform target;
 
+    NavMeshAgent navMeshAgent;
+    Animator animator;
+
     Ray lastRay;
     Vector3 mousePos;
     NavMeshAgent navMesh;
     PlayerInputActions playerInputActions;
+    Vector3 playerCurrentVelocity;
 
     private void Awake() 
     {
         playerInputActions = new PlayerInputActions();
         playerInputActions.Player.Enable(); 
+        navMesh = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
     }
 
     // Start is called before the first frame update
@@ -29,6 +36,9 @@ public class Mover : MonoBehaviour
     void Update()
     {
         MoveToCursor();
+        playerCurrentVelocity = navMesh.velocity;
+        playerCurrentVelocity = transform.InverseTransformDirection(playerCurrentVelocity);
+        animator.SetFloat("ForwardMotion", playerCurrentVelocity.z);
     }
 
     // private void OnFire() 
