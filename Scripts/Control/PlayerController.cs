@@ -22,7 +22,7 @@ namespace RPG.Control
             //input system
             playerInputActions = new PlayerInputActions();
             playerInputActions.Player.Enable(); 
-            playerInputActions.Player.ClickToMove.performed += InitiateCombat;
+            //playerInputActions.Player.ClickToMove.performed += InitiateCombat;
             //find components/objects
             mover = FindObjectOfType<Mover>();  
             animator = GetComponent<Animator>();  
@@ -36,17 +36,18 @@ namespace RPG.Control
 
         void Update()
         {
+            InteractWithCombat();
             MoveToCursor();
         }
 
-        void InitiateCombat(InputAction.CallbackContext context)
+        void InteractWithCombat()
         {
             //if (context.performed)
             RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
             foreach (RaycastHit hit in hits)
             {
                 CombatTarget target = hit.transform.GetComponent<CombatTarget>();
-                if (target != null)
+                if (target != null && playerInputActions.Player.ClickToMove.triggered)
                 {
                     fighter.Attack(target);
                 }
