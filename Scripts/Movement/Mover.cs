@@ -10,6 +10,7 @@ namespace RPG.Movement
         [SerializeField] Transform target;
 
         Animator animator;
+        NavMeshAgent navMeshAgent;
 
         Ray lastRay;
         Vector3 mousePos;
@@ -21,6 +22,7 @@ namespace RPG.Movement
             playerInputActions = new PlayerInputActions();
             playerInputActions.Player.Enable(); 
             animator = GetComponent<Animator>();
+            navMeshAgent = GetComponent<NavMeshAgent>();
         }
 
         void Start()
@@ -36,7 +38,13 @@ namespace RPG.Movement
 
         public void MoveTo(Vector3 destination)
         {
-            GetComponent<NavMeshAgent>().destination = destination;
+            navMeshAgent.destination = destination;
+            navMeshAgent.isStopped = false;
+        }
+
+        public void StopMovement()
+        {
+            navMeshAgent.isStopped = true;
         }
 
         void UpdateAnimation()

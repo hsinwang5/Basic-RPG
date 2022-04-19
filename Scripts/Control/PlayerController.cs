@@ -37,7 +37,7 @@ namespace RPG.Control
         void Update()
         {
             if (InteractWithCombat()) return;
-            MoveToCursor();
+            if (MoveToCursor()) return;
         }
 
         bool InteractWithCombat()
@@ -60,17 +60,19 @@ namespace RPG.Control
             
         }
 
-        void MoveToCursor()
-        {
-            if (MouseLeftClicked())
+        bool MoveToCursor()
+        {   
+            RaycastHit hit;
+            bool hasHit = Physics.Raycast(GetMouseRay(), out hit);
+            if (hasHit)
             {
-                RaycastHit hit;
-                bool hasHit = Physics.Raycast(GetMouseRay(), out hit);
-                if (hasHit)
+                if (MouseLeftActive())
                 {
-                    mover.MoveTo(hit.point);
+                mover.MoveTo(hit.point);
                 }
+                return true;
             }
+            return false;
         }
 
         private Ray GetMouseRay()
@@ -80,7 +82,7 @@ namespace RPG.Control
             return ray;
         }
 
-        bool MouseLeftClicked()
+        bool MouseLeftActive()
         {
             return playerInputActions.Player.ClickToMove.ReadValue<float>() == 1;
         }
