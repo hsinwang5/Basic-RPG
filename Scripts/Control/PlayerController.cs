@@ -36,22 +36,26 @@ namespace RPG.Control
 
         void Update()
         {
-            InteractWithCombat();
+            if (InteractWithCombat()) return;
             MoveToCursor();
         }
 
-        void InteractWithCombat()
+        bool InteractWithCombat()
         {
             //if (context.performed)
             RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
             foreach (RaycastHit hit in hits)
             {
                 CombatTarget target = hit.transform.GetComponent<CombatTarget>();
-                if (target != null && playerInputActions.Player.ClickToMove.triggered)
+                if (target == null) continue;
+
+                if (playerInputActions.Player.ClickToMove.triggered)
                 {
                     fighter.Attack(target);
                 }
+                return true;
             }
+            return false;
 
             
         }
