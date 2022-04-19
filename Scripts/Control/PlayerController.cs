@@ -67,8 +67,8 @@ namespace RPG.Control
             if (hasHit)
             {
                 if (MouseLeftActive())
-                {
-                mover.MoveTo(hit.point);
+                {   
+                    mover.MoveAction(hit.point);
                 }
                 return true;
             }

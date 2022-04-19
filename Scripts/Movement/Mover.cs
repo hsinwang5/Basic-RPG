@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using RPG.Combat;
 
 namespace RPG.Movement 
 {
@@ -11,6 +12,7 @@ namespace RPG.Movement
 
         Animator animator;
         NavMeshAgent navMeshAgent;
+        Fighter fighter;
 
         Ray lastRay;
         Vector3 mousePos;
@@ -23,6 +25,7 @@ namespace RPG.Movement
             playerInputActions.Player.Enable(); 
             animator = GetComponent<Animator>();
             navMeshAgent = GetComponent<NavMeshAgent>();
+            fighter = GetComponent<Fighter>();
         }
 
         void Start()
@@ -34,6 +37,12 @@ namespace RPG.Movement
             //MoveToCursor();
             UpdateAnimation();
             
+        }
+
+        public void MoveAction(Vector3 destination)
+        {
+            fighter.CancelAttack();
+            MoveTo(destination);
         }
 
         public void MoveTo(Vector3 destination)

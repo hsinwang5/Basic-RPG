@@ -36,7 +36,11 @@ namespace RPG.Combat
         public void Attack(CombatTarget combatTarget) 
         {
             target = combatTarget.transform;
-            
+        }
+
+        public void CancelAttack()
+        {
+            target = null;
         }
     }
 }
