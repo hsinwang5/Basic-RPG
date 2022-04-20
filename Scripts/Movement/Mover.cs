@@ -2,18 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using RPG.Combat;
 using RPG.Core;
 
 namespace RPG.Movement 
 {
-    public class Mover : MonoBehaviour
+    public class Mover : MonoBehaviour, IAction
     {
         [SerializeField] Transform target;
 
         Animator animator;
         NavMeshAgent navMeshAgent;
-        Fighter fighter;
 
         Ray lastRay;
         Vector3 mousePos;
@@ -26,7 +24,6 @@ namespace RPG.Movement
             playerInputActions.Player.Enable(); 
             animator = GetComponent<Animator>();
             navMeshAgent = GetComponent<NavMeshAgent>();
-            fighter = GetComponent<Fighter>();
         }
 
         void Start()
@@ -42,8 +39,7 @@ namespace RPG.Movement
 
         public void MoveAction(Vector3 destination)
         {
-            GetComponent<ActionScheduler>().StartAction(this);
-            fighter.CancelAttack();
+            GetComponent<ActionScheduler>().StartAction(this); //stops click to move behavior
             MoveTo(destination);
         }
 
@@ -53,7 +49,7 @@ namespace RPG.Movement
             navMeshAgent.isStopped = false;
         }
 
-        public void StopMovement()
+        public void Cancel()
         {
             navMeshAgent.isStopped = true;
         }

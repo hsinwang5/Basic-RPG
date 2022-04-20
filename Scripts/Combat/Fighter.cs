@@ -6,7 +6,7 @@ using RPG.Core;
 
 namespace RPG.Combat 
 {
-    public class Fighter : MonoBehaviour
+    public class Fighter : MonoBehaviour, IAction
     {
         [SerializeField] float weaponRange = 2;
         Transform target;
@@ -26,10 +26,11 @@ namespace RPG.Combat
                 if (distance > weaponRange)
                 {
                     GetComponent<Mover>().MoveTo(target.position);
+                    Debug.Log("attacking");
                 }
                 else 
                 {
-                    GetComponent<Mover>().StopMovement();
+                    GetComponent<Mover>().Cancel();
                 }
             }
         }
@@ -40,7 +41,7 @@ namespace RPG.Combat
             target = combatTarget.transform;
         }
 
-        public void CancelAttack()
+        public void Cancel()
         {
             target = null;
         }
