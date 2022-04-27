@@ -10,6 +10,7 @@ namespace RPG.Combat
     {
         [SerializeField] float weaponRange = 2;
         [SerializeField] float attackDelay = 1f;
+        [SerializeField] float weaponDamage = 20f;
         Transform target;
 
         float timeSinceLastAttack = 0;
@@ -42,6 +43,7 @@ namespace RPG.Combat
         {
             if (timeSinceLastAttack > attackDelay)
             {
+                //this will trigger the Hit() event
                 GetComponent<Animator>().SetTrigger("Attack");
                 timeSinceLastAttack = 0;
             }
@@ -61,7 +63,9 @@ namespace RPG.Combat
         //called during animation event
         void Hit() 
         {
-
+            //called during attack so will always have a target
+            Health targetHealth = target.GetComponent<Health>(); 
+            targetHealth.TakeDamage(weaponDamage);
         }
     }
 }
